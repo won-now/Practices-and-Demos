@@ -1,0 +1,62 @@
+主机到主机通信模型
+1.网络连接好后主机和主机就可以通信了吗？
+网络是为应用提供服务的
+地址 Ethernet 以太网
+MAC地址 Media Access Control介质访问控制 48bit XXXX.XXXX.XXXX.
+MAC前半段 OUI：组织唯一标识符
+二层地址 硬件地址 ROM 只读存储器
+同网络内，MAC地址有用，不同网络间，二层地址无用
+三层地址 IPv4 Internet Protocol Version 4 因特网协议版本4 IPv6
+32bit X.X.X.X 点分十进制 0-255
+整个Internet范围内标识一个Node 
+高位 网络位
+低位 主机位
+网络位标识主机所在网络，相同网络内的所有主机IP地址一定相同
+相同网络内的所有主机IP地址彼此不同
+网关 Gateway 一个网络的出口
+Unix Linux IOS XE CLI Command Line Interface 命令行界面系统
+Router（主机名）>用户模式
+Router#特权模式 show(思科) display(华为)
+Router（config）#全局配置模式
+Ping Echo Request Echo Reply
+
+2.主机间通信需要具备些什么条件？
+具备二层和三层标识符
+
+3.主机间通信该如何告知网络设备地址信息
+形成数据的永远是App bit 电信号 光信号 介质 线缆 0 1
+内容：数据载荷
+数据报头2|数据报头1(信封)| 选路 源、目 地址、Port（app）数据封装
+Protocol 协议 协议栈 TCP/IP OSI
+
+4.什么规定了封装格式
+
+5.协议和协议栈是什么，OSI是什么？
+网络是为应用提供服务的
+地址 Ethernet 以太网
+MAC地址 Media Access Control介质访问控制 48bit XXXX.XXXX.XXXX.
+MAC前半段 OUI：组织唯一标识符
+二层地址 硬件地址 ROM 只读存储器
+同网络内，MAC地址有用，不同网络间，二层地址无用
+三层地址 IPv4 Internet Protocol Version 4 因特网协议版本4 IPv6
+32bit X.X.X.X 点分十进制 0-255
+整个Internet范围内标识一个Node 
+高位 网络位
+低位 主机位
+网络位标识主机所在网络，相同网络内的所有主机IP地址一定相同
+相同网络内的所有主机IP地址彼此不同
+网关 Gateway 一个网络的出口
+Unix Linux IOS XE CLI Command Line Interface 命令行界面系统
+Router（主机名）>用户模式
+Router#特权模式 show(思科) display(华为)
+Router（config）#全局配置模式
+Ping Echo Request Echo Reply
+
+2.主机间通信需要具备些什么条件？
+具备二层和三层标识符
+
+3.主机间通信该如何告知网络设备地址信息
+形成数据的永远是App bit 电信号 光信号 介质 线缆 0 1
+内容：数据载荷
+数据报头2|数据报头1(信封)| 选路 源、目 地址、Port（app）数据封装
+Protocol 协议 协议栈 TCP/IP OSI
