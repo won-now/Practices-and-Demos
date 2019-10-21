@@ -12,6 +12,7 @@ public class MyServer {
             ServerSocket ss = new ServerSocket(38888);
             while (true){
                 Socket skt = ss.accept();
+                System.out.println("连接成功");
                 sockets.add(skt);
                 new Thread(new ServerThread(skt)).start();
             }
