@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="27d3366b-f40a-45da-9285-34c2c10e04aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/FileDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AndroidHttpTest/SimpleServer/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AndroidHttpTest/SimpleServer/src/SocketServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AndroidHttpTest/TestTCP/SimpleClient/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AndroidHttpTest/TestTCP/SimpleClient/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileDemo.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,10 +33,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileDemo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="31" column="63" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="63" />
+            <state relative-caret-position="-700">
+              <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#494#495#0" expanded="true" />
+                <element signature="e#550#551#0" expanded="true" />
+                <element signature="e#767#768#0" expanded="true" />
+                <element signature="e#822#823#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -252,7 +260,7 @@
       <workItem from="1571466870177" duration="4224000" />
       <workItem from="1571486942792" duration="888000" />
       <workItem from="1571533436052" duration="13019000" />
-      <workItem from="1571620026708" duration="9782000" />
+      <workItem from="1571620026708" duration="11204000" />
     </task>
     <task id="LOCAL-00001" summary="Serial">
       <created>1571623757484</created>
@@ -265,7 +273,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31870000" />
+    <option name="totallyTimeSpent" value="33292000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -280,7 +288,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32051283" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32051283" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -492,10 +500,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FileDemo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="31" column="63" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="63" />
+        <state relative-caret-position="-700">
+          <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#494#495#0" expanded="true" />
+            <element signature="e#550#551#0" expanded="true" />
+            <element signature="e#767#768#0" expanded="true" />
+            <element signature="e#822#823#0" expanded="true" />
           </folding>
         </state>
       </provider>
