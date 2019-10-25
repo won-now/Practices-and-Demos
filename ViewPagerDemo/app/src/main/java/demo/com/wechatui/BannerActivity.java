@@ -1,19 +1,17 @@
 package demo.com.wechatui;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-
-import java.util.ArrayList;
-
 import demo.com.wechatui.Transformer.ScaleTransFormer;
 import demo.com.wechatui.fragment.SplashFragment;
 
-public class SplashActivity extends AppCompatActivity {
+public class BannerActivity extends AppCompatActivity {
 
     private ViewPager mVpShow;
 
@@ -26,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_banner);
 
         mVpShow = findViewById(R.id.vp_show);
         mVpShow.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager(), 1) {
