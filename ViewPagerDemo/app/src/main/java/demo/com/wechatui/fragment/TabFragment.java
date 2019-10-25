@@ -19,7 +19,7 @@ public class TabFragment extends Fragment {
     private TextView mTvTitle;
     private String mTitle;
 
-    public static interface OnTitleClickListener{
+    public interface OnTitleClickListener{
         void onClick(String title);
     }
 

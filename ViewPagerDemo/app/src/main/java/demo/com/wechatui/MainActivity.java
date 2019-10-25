@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private Button mBtnContacts;
     private Button mBtnDisover;
     private Button mBtnMe;
+
+    private List<Button> mTabs = new ArrayList<>();
 
     private SparseArray<TabFragment> mFragments = new SparseArray<>();
 
@@ -83,17 +86,27 @@ public class MainActivity extends AppCompatActivity {
         mVpMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                    //left -> right   offset:0->1
+                    //right -> left   offset:1->0
+                //left: progress 0~1 right progress:1~0
+//                Log.d("onPageScrolled","position:" + position + " offset:" + positionOffset);
+                if(positionOffset > 0){
+                    Button left = mTabs.get(position);
+                    Button right = mTabs.get(position + 1);
+                    left.setText( (1 - positionOffset) + "");
+                    right.setText(positionOffset + "");
+                }
             }
 
             @Override
             public void onPageSelected(int position) {
-
+//                Log.d("onPageSelected","position:" + position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                //state 0:IDLE 1:DRAGGING 2:SETTLING 0
+//                Log.d("onPageScrollStateChange","state: " + state);
             }
         });
     }
@@ -104,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
         mBtnContacts = findViewById(R.id.btn_contacts);
         mBtnDisover = findViewById(R.id.btn_discover);
         mBtnMe = findViewById(R.id.btn_me);
+
+        mTabs.add(mBtnWechat);
+        mTabs.add(mBtnContacts);
+        mTabs.add(mBtnDisover);
+        mTabs.add(mBtnMe);
 
         mBtnWechat.setOnClickListener(new View.OnClickListener() {
             @Override
