@@ -12,7 +12,10 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import imooc.com.downloaddemo.db.ThreadDAO;
 import imooc.com.downloaddemo.db.ThreadDAOImpl;
@@ -25,29 +28,75 @@ public class DownloadTask {
     private FileInofo mFileInfo;
     private ThreadDAO mDao;
     private long mFinished = 0;
+    private int mThreadCount = 1;
+    private List<DownloadThread> mThreadList;
+    public static ExecutorService sExecutorService =
+                                Executors.newCachedThreadPool();
+
     public boolean isPause = false;
 
-    public DownloadTask(Context context, FileInofo mFileInfo) {
+
+    public DownloadTask(Context context, FileInofo mFileInfo, int threadCount) {
         this.mContext = context;
         this.mFileInfo = mFileInfo;
+        this.mThreadCount = threadCount;
         mDao = new ThreadDAOImpl(context);
     }
 
     public void download(){
-        List<ThreadInfo> threadInfos = mDao.getThreads(mFileInfo.getUrl());
-        ThreadInfo threadInfo = null;
-        if(threadInfos.size() == 0){
-            threadInfo = new ThreadInfo(0, mFileInfo.getUrl(), 0, mFileInfo.getLength(), 0 );
-//            mDao.insertThread(threadInfo);
-        }else {
-            threadInfo = threadInfos.get(0);
-            Log.d("threadInfo","11111111111");
+        List<ThreadInfo> threads = mDao.getThreads(mFileInfo.getUrl());
+        int partSize = (int) (mFileInfo.getLength() / mThreadCount);
+        if(threads.size() == 0){
+            ThreadInfo threadInfo = null;
+            for(int i = 0; i < mThreadCount; i++){
+                 threadInfo = new ThreadInfo(0,mFileInfo.getUrl(),
+                         i * partSize, (i+1) * partSize - 1, 0);
+                if(i == mThreadCount - 1){
+                    threadInfo.setEnd(mFileInfo.getLength());
+                }
+                threads.add(threadInfo);
+                mDao.insertThread(threadInfo);
+            }
         }
-        new DownloadThread(threadInfo).start();
+
+        mThreadList = new ArrayList<>();
+        for(ThreadInfo info : threads){
+            DownloadThread thread = new DownloadThread(info);
+//            thread.start();
+            DownloadTask.sExecutorService.execute(thread);
+            mThreadList.add(thread);
+        }
+//        ThreadInfo threadInfo = null;
+//        if(threadInfos.size() == 0){
+//            threadInfo = new ThreadInfo(0, mFileInfo.getUrl(), 0, mFileInfo.getLength(), 0 );
+////            mDao.insertThread(threadInfo);
+//        }else {
+//            threadInfo = threadInfos.get(0);
+//            Log.d("threadInfo","11111111111");
+//        }
+//        new DownloadThread(threadInfo).start();
+    }
+
+    private synchronized void checkAllThreadsFinished(){
+        boolean allFinished = true;
+        for(DownloadThread thread : mThreadList){
+            if(!thread.isFinished){
+                allFinished = false;
+                break;
+            }
+        }
+        if(allFinished){
+            mDao.deleteThread(mFileInfo.getUrl());
+            Intent intent = new Intent(DownloadService.ACTION_FINISHED);
+            intent.putExtra("fileInfo",mFileInfo);
+            mContext.sendBroadcast(intent);
+        }
     }
 
     class DownloadThread extends Thread{
+
         private ThreadInfo mThreadInfo;
+        public boolean isFinished = false;
 
         public DownloadThread(ThreadInfo mThreadInfo) {
             this.mThreadInfo = mThreadInfo;
@@ -55,10 +104,6 @@ public class DownloadTask {
 
         @Override
         public void run() {
-            if(!mDao.isExists(mFileInfo.getUrl(),mThreadInfo.getId())){
-                mDao.insertThread(mThreadInfo);
-            }
-
             HttpURLConnection conn = null;
             RandomAccessFile raf = null;
             InputStream input = null;
@@ -89,9 +134,11 @@ public class DownloadTask {
                     while ((len = buffer.read(bytes)) != -1){
                         raf.write(bytes, 0 , len);
                         mFinished += len;
-                        if(System.currentTimeMillis() - currentTime > 500){
+                        mThreadInfo.setFinished(mThreadInfo.getFinished() + len);
+                        if(System.currentTimeMillis() - currentTime > 1000){
                             currentTime = System.currentTimeMillis();
-                            intent.putExtra("finished", (int) (mFinished * 100 / mFileInfo.getLength()));
+                            intent.putExtra("finished", (int)(mFinished * 100 / mFileInfo.getLength()));
+                            intent.putExtra("id",mFileInfo.getId());
 //                            Log.d("intent", mFinished+"");
                             mContext.sendBroadcast(intent);
                         }
@@ -101,18 +148,18 @@ public class DownloadTask {
                             return;
                         }
                     }
-                    if (mFileInfo.getLength() == mFinished){
-                        mDao.deleteThread(mThreadInfo.getUrl(), mThreadInfo.getId());
-                    }
+                    isFinished = true;
+                    Log.d("DELETE THREAD","delete!!!");
+                    checkAllThreadsFinished();
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }finally {
                 try {
-                    conn.disconnect();
-                    raf.close();
                     buffer.close();
                     input.close();
+                    raf.close();
+                    conn.disconnect();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

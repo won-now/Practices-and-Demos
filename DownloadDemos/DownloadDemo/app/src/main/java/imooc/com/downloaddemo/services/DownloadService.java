@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import imooc.com.downloaddemo.entities.FileInofo;
 
@@ -25,22 +28,26 @@ public class DownloadService extends Service {
     public static final String ACTION_START = "ACTION_START";
     public static final String ACTION_STOP = "ACTION_STOP";
     public static final String ACTION_UPDATE = "ACTION_UPDATE";
+    public static final String ACTION_FINISHED = "ACTION_FINISHED";
     public static final int MSG_INIT = 0;
 
-    private DownloadTask mTask;
+    private InitThread mInitThread;
+    private Map<Integer,DownloadTask> mTasks = new LinkedHashMap<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(ACTION_START.equals(intent.getAction())){
             FileInofo fileInofo = (FileInofo) intent.getSerializableExtra("fileInfo");
-            new InitThread(fileInofo).start();
-            Log.i("test","Start:" + fileInofo.toString());
+            mInitThread =  new InitThread(fileInofo);
+//            Log.i("test","Start:" + fileInofo.toString());
+            DownloadTask.sExecutorService.execute(mInitThread);
         }else if(ACTION_STOP.equals(intent.getAction())){
             FileInofo fileInofo = (FileInofo) intent.getSerializableExtra("fileInfo");
-            Log.i("test","Stop:" + fileInofo.toString());
+//            Log.i("test","Stop:" + fileInofo.toString());
+            DownloadTask task = mTasks.get(fileInofo.getId());
 
-            if(mTask != null){
-                mTask.isPause = true;
+            if(task != null){
+                task.isPause = true;
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -58,9 +65,9 @@ public class DownloadService extends Service {
                 case MSG_INIT:
                     FileInofo fileInofo = (FileInofo) msg.obj;
                     Log.i("test","Init:" + fileInofo);
-
-                    mTask = new DownloadTask(DownloadService.this, fileInofo);
-                    mTask.download();
+                    DownloadTask task = new DownloadTask(DownloadService.this, fileInofo,3);
+                    mTasks.put(fileInofo.getId(), task);
+                    task.download();
 
                     break;
             }
@@ -106,8 +113,10 @@ public class DownloadService extends Service {
                 e.printStackTrace();
             }finally {
                 try {
-                    raf.close();
-                    conn.disconnect();
+                    if(raf != null)
+                        raf.close();
+                    if(conn != null)
+                        conn.disconnect();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
