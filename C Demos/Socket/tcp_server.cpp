@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <strings.h>
+#include <string.h>
 
 #define PORT 8111
 #define MESSAGE_LEN 1024
@@ -69,6 +70,8 @@ int main(int argc, char* argv[])
 
 			std::cout << "recv:" << in_buff << std::endl;
 			send(accept_fd, (void*)in_buff, MESSAGE_LEN, 0);
+
+			memset(in_buff, 0, MESSAGE_LEN);
 		}
 
 		close(accept_fd);
