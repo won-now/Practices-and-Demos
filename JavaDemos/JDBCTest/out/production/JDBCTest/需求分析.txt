@@ -1,0 +1,21 @@
+建表
+ create table imooc_goddess(
+    -> id int primary key auto_increment,
+    -> user_name varchar(30) not null,
+    -> sex int,
+    -> age int,
+    -> birthday date,
+    -> email varchar(30),
+    -> mobile varchar(11),
+    -> create_user varchar(30),
+    -> create_date date,
+    -> update_user varchar(30),
+    -> update_date date,
+    -> isdel int)
+    -> engine=innodb default charset=utf8 auto_increment=1;
+1.查询
+查看所有基本信息
+查看某一位详细信息
+2.添加
+3.删除
+4.更新
