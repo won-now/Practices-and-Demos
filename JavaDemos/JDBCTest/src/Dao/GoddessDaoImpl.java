@@ -98,12 +98,15 @@ public class GoddessDaoImpl implements GoddessDao {
     }
 
     @Override
-    public int update() {
-        return 0;
+    public int update(String user_name,int id) {
+        String sql = "update imooc_goddess set user_name=?,update_date=current_date() where id=?";
+         return DBUtil.executeDML(sql,user_name,id);
     }
 
     @Override
-    public int delete() {
-        return 0;
+    public int delete(int id)
+    {
+        String sql = "delete from imooc_goddess where id=?";
+        return DBUtil.executeDML(sql,id);
     }
 }
